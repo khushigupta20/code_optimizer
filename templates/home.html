@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>This is my Portfolio Website</title>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <script src=https://code.jquery.com/jquery-3.6.0.min.js></script>
+</head>
+
+<body>
+    <style>
+        html,body{height:100%;}
+    </style>
+    <div class="jumbotron text-center">
+        <h1>Code Optimizer</h1>
+        <p>Please paste your code here to optimize it!</p>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label for="usr">Original Code:</label>
+                    <textarea class="form-control" rows="10" id="code_o"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 py-3 text-right">
+                <button type="button" class="btn btn-primary" id="btn_optimize_now">Optimize Now!</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label for="usr">Optimized Code:</label>
+                    <pre class="form-control flex-grew-1"  id="code_f"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+        crossorigin="anonymous"></script>
+
+    <script lang="JavaScript">
+        $(document).ready(function () {
+            $("#btn_optimize_now").click(function () {
+                let original_text = $('#code_o').val();
+                
+                // Make sure the code isn't empty
+                if (!original_text.trim()) {
+                    alert("Please enter code to optimize.");
+                    return;
+                }
+
+                // Send POST request to the /optimize endpoint
+                $.ajax({
+                    url: "/optimize", // Replace with your API endpoint URL
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify({ code: original_text }),
+                    success: function (response) {
+                        // Display the response
+                        $('#code_f').text(response)
+                    },
+                    error: function (xhr, status, error) {
+                        // Handle errors
+                        console.error("Error:", error);
+                        alert("An error occurred: " + xhr.responseText || error);
+                    }
+                });
+
+            });
+        });
+
+    </script>
+</body>
+
+</html>
