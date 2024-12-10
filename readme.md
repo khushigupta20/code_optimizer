@@ -17,30 +17,35 @@ This repository contains a FastAPI-based backend for optimizing Python code. The
 Follow these steps to set up the repository locally:
 
 1. **Clone the Repository**:
-   ```bash
+   ```
+   bash
    git clone https://github.com/khushigupta20/code_optimizer.git
    cd code_optimizer
    ```
    
 2. **Create a Virtual Environment**:
-   ```bash
+   ```
+   bash
    Copy code
    python -m venv venv
    source venv/bin/activate       # On Windows: venv\Scripts\activate
    ```
 
 3. **Install Dependencies**:
-   ```bash
+   ```
+   bash
    Copy code
    pip install -r requirements.txt
    ```
 4. **Add Open API Key to environment variables**:
    Please add it to .env file: 
-   ```OPENAI_API_KEY=
+   ```
+   OPENAI_API_KEY=
    ```
    
-6. **Run the Application**:
-   ```bash
+5. **Run the Application**:
+   ```
+   bash
    Copy code
    uvicorn main:app --reload
    ```
