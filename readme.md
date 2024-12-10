@@ -34,8 +34,12 @@ Follow these steps to set up the repository locally:
    Copy code
    pip install -r requirements.txt
    ```
-
-4. **Run the Application**:
+4. **Add Open API Key to environment variables**:
+   Please add it to .env file: 
+   ```OPENAI_API_KEY=
+   ```
+   
+6. **Run the Application**:
    ```bash
    Copy code
    uvicorn main:app --reload
