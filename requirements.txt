@@ -7,3 +7,4 @@ transformers
 huggingface-hub
 torch
 langchain_community
+openai

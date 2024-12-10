@@ -1,45 +1,42 @@
-from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
-from langchain.llms import HuggingFacePipeline
+from langchain.llms import OpenAI
 from langchain.prompts import PromptTemplate
+from langchain.chains import LLMChain
+import os
 
 def optimizeCode(original_code):
 
-    # Load the smaller model and tokenizer
-    model_name = "Salesforce/codegen-350M-multi"  # Using a smaller model
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
-    model = AutoModelForCausalLM.from_pretrained(model_name)
+    # Optionally, you can set the token as an environment variable to avoid hardcoding it
+    openai_api_key = os.getenv("OPENAI_API_KEY")
 
-    # Create a Hugging Face pipeline
-    hf_pipeline = pipeline("text-generation", model=model, tokenizer=tokenizer, max_length=256)
-
-    # Wrap the pipeline with LangChain's HuggingFacePipeline
-    llm = HuggingFacePipeline(pipeline=hf_pipeline)
-
-    # Define the prompt template
-    prompt_template = PromptTemplate(
-        input_variables=["task", "constraints", "code"],
-        template="""
-        You are an expert software developer. Your task is to optimize and clean provided code.
-        Task: {task}
-        Constraints: {constraints}
-
-        Provide code that adheres to best practices, is efficient, and easy to maintain. Please provide details of changes made and reasons.
-
-        Provided Code:
-        {code}
-        """
+    # Set up OpenAI model with LangChain
+    llm = OpenAI(
+        openai_api_key=openai_api_key,  # Pass your OpenAI API key
+        model="gpt-3.5-turbo-instruct",        # Choose the OpenAI model (e.g., text-davinci-003 or gpt-3.5-turbo)
+        temperature=0.5                  # Adjust temperature for response randomness
     )
 
-    # Specify task and constraints
-    task = "Optimize the given code below."
-    constraints = "The code should have minimal time complexity and minimal auxiliary space."
+    # Define a prompt template for optimizing code
+    template = """
+    You are an expert Software developer. Your task is to identify language of the code given below, optimize the code, improving efficiency and readability while maintaining its original functionality.
 
-    # Format the prompt
-    formatted_prompt = prompt_template.format(task=task, constraints=constraints, code=original_code)
+    Here is the code to optimize:
+    {code}
 
-    # Generate a response from the model
-    response = llm(formatted_prompt)
-    print(response)
+    ---------------------------------------------------------------------------
+    Please provide the optimized version of the code along with detailed reasons.
+    """
 
-    return response
+    # Create a prompt template
+    prompt = PromptTemplate(input_variables=["code"], template=template)
+
+    # Set up the LLMChain with the model and prompt
+    chain = LLMChain(llm=llm, prompt=prompt)
+
+    # Run the chain to get optimized code
+    optimized_code = chain.run({"code": original_code})
+
+    # Print the optimized code
+    print(optimized_code)
+
+    return optimized_code
 
