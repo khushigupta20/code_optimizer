@@ -18,23 +18,18 @@ Follow these steps to set up the repository locally:
 
 1. **Clone the Repository**:
    ```
-   bash
    git clone https://github.com/khushigupta20/code_optimizer.git
    cd code_optimizer
    ```
    
 2. **Create a Virtual Environment**:
    ```
-   bash
-   Copy code
    python -m venv venv
    source venv/bin/activate       # On Windows: venv\Scripts\activate
    ```
 
 3. **Install Dependencies**:
    ```
-   bash
-   Copy code
    pip install -r requirements.txt
    ```
 4. **Add Open API Key to environment variables**:
@@ -45,8 +40,6 @@ Follow these steps to set up the repository locally:
    
 5. **Run the Application**:
    ```
-   bash
-   Copy code
    uvicorn main:app --reload
    ```
 
